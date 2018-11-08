@@ -42,6 +42,6 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument("--src_lang_file", default='jpn/wn-data-jpn.tab', type=str)
   parser.add_argument("--trg_lang_file", default='eng/wn-data-eng.tab', type=str)
-  parser.add_argument("--output_prefix", default='en-ja', type=str)
+  parser.add_argument("--output_prefix", default='ja-en', type=str)
   args  = parser.parse_args()
   main(args)

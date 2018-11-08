@@ -8,10 +8,12 @@ def cosine_similarity(v1, v2):
   '''
   return np.dot(v1, v2) / np.linalg.norm(v1) / np.linalg.norm(v2)
 
-def read(file_path):
+def read(file_path, max_rows):
   emb_dict = OrderedDict()
   embedding_size = None
   for i, l in enumerate(open(file_path)):
+    if max_rows and i+1 >=max_rows:
+      break
     if i == 0:
       embedding_size = int(l.split()[1])
     line = l.split()
@@ -23,14 +25,10 @@ def read(file_path):
   return emb_dict
 
 def main(args):
-  ja_emb_name = 'wiki.ja.vec.mapped.50000'
-  en_emb_name = 'wiki.en.vec.mapped.50000'
-  #ja_emb_name = 'wiki.ja.vec.normed.50000'
-  #en_emb_name = 'wiki.en.vec.normed.50000'
-  #ja_emb_name += '.shifted'
-  #en_emb_name += '.shifted'
-  ja_emb = read(ja_emb_name)
-  en_emb = read(en_emb_name)
+  ja_emb_name = args.ja_emb
+  en_emb_name = args.en_emb
+  ja_emb = read(ja_emb_name, args.max_rows)
+  en_emb = read(en_emb_name, args.max_rows)
   #print (len(ja_emb), len(en_emb))
   #exit(1)
   while True:
@@ -75,6 +73,12 @@ def main(args):
       print ('%s is not found in vocabulary.' % word)
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
+  parser.add_argument('--ja_emb', default='fasttext/wiki.ja.vec.mapped', 
+                      type=str, help ='')
+  parser.add_argument('--en_emb', default='fasttext/wiki.en.vec.mapped',
+                      type=str, help ='')
+  parser.add_argument('-mr', '--max_rows', default=100000,
+                      type=int, help ='')
   args  = parser.parse_args()
   main(args)
 
