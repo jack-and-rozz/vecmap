@@ -20,7 +20,6 @@ try:
 except ImportError:
     cupy = None
 
-
 def supports_cupy():
     return cupy is not None
 
